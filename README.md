@@ -1,5 +1,5 @@
 # Min-Cost-Arboroscence-on-a-Directed-Weighted-Graph
-The code is an implementation of a recursive Edmond's Branching Algorithm to find the minimum cost arboroscence of a dirceted & weighted graph.
+The code is an implementation of a recursive Edmond's Branching Algorithm to find the minimum cost arborescence of a directed & weighted graph.
 <br>
 <br>
 Please refer to the txt file for more details of the code, along with input & output formats.
