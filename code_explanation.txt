@@ -3,55 +3,55 @@ Minimum Cost Arboroscence on a Directed, Weighted Graph using Recursive Edmond's
 
 Assumptions made while writing the code :
 
-1. No multiple edges between 2 verticies.
+1. No multiple edges between 2 vertices.
 2. No negative edge weights (irrespective of whether that node is reachable or not!) ---> the code prints -1 in case any negative edge weight is detected.
 
 
-Incase of a segmentation fault (which would mostly occur if one of these 2 assumptions are not valid for the tested graph, causing problems especially in the 'print_output' function), please run each test case individualy.
+In case of a segmentation fault (which would mostly occur if one of these 2 assumptions is not valid for the tested graph, causing problems, especially in the 'print_output' function), please run each test case individually.
 
 
 This implementation uses a recursive implementation of Edmond's Branching Algorithm as follows :
 
-1. For all vertcies except the source, the minimum incoming edge weight is subrtracted from all incoming edges to the vertex (edge contraction).
+1. For all vertices except the source, the minimum incoming edge weight is subtracted from all incoming edges to the vertex (edge contraction).
    This is done in the function 'contract_edges'.
 
-2. All the edges having weight = 0 after edge contraction are then taken into a set, and checked whether they form an arboroscence.
-   That is, using back edge detection to confirm a cycle in a graph using DFS, if any cycle is detected from the set of collected edges in the set, then it does not form an arboroscence.
-   This is done using the function 'is_arboroscence', and cycle detection is checked in the fuction 'dfs_cycle_detect'.
+2. All the edges having weight = 0 after edge contraction are then taken into a set and checked whether they form an arborescence.
+   That is, using back edge detection to confirm a cycle in a graph using DFS, if any cycle is detected from the set of collected edges in the set, then it does not form an arborescence.
+   This is done using the function 'is_arboroscence', and cycle detection is checked in the function 'dfs_cycle_detect'.
 
-3. If no cycle is detected, then the graph from the contracted set of edges form the minimum cost arboroscence, and those edges are returned.
-   Otherwise, we contract all the verticies in the detected cycle are stored in a set called 'supernode_verticies'.
-   The adjacency list is accordingly modified (a new one is created) to accomodate this supernode where the supernode has a vertex number 'n + running_supernode'.
-   running_supernode is used to indicate each successive recursive call, where the supernode in every successive recursive call is represented by vertex number n+1, n+2, n+3, etc.
+3. If no cycle is detected, then the graph from the contracted set of edges forms the minimum cost arborescence, and those edges are returned.
+   Otherwise, we contract all the vertices in the detected cycle are stored in a set called 'supernode_verticies'.
+   The adjacency list is accordingly modified (a new one is created) to accommodate this supernode where the supernode has a vertex number 'n + running_supernode'.
+   running_supernode is used to indicate each successive recursive call, where the supernode in every successive recursive call is represented by vertex numbers n+1, n+2, n+3, etc.
 
-4. The mimumum cost arboroscence is called recursively on the new adjacency list (containing the contracted supernode), in function 'min_cost_arboroscence'.
-   This recursive call outputs the set of edges for the arboroscence for the graph containing the supernode. This set of edges needs to be modified by expanding out the supernode again.
+4. The minimum cost arborescence is called recursively on the new adjacency list (containing the contracted supernode), in function 'min_cost_arboroscence'.
+   This recursive call outputs the set of edges for the arborescence for the graph containing the supernode. This set of edges needs to be modified by expanding out the supernode again.
    
-5. Except for the edge within the supernode that goes to the same vertex as by the set of edges output by 'min_cost_arboroscence' function, all other cycle edges within the supernode are added to the final set of edges.
-   Using the previous adjacency list, all edges outgoing from the supernode are reassigned to the individual verticies within the supernode.
+5. Except for the edge within the supernode that goes to the same vertex as by the set of edges output by the 'min_cost_arboroscence' function, all other cycle edges within the supernode are added to the final set of edges.
+   Using the previous adjacency list, all edges outgoing from the supernode are reassigned to the individual vertices within the supernode.
    All this happens in the 'expand_supernode' function.
 
-6. Using these final set of edges that constitute the minimum cost arboroscence, the output (in the specified format) is printed by using the 'print_output' function.
+6. Using this final set of edges that constitute the minimum cost arborescence, the output (in the specified format) is printed by using the 'print_output' function.
    Each test case runs by a call to the 'perform_ops' function.
 
 
 Efficiency Analysis :
 
-n = number of verticies ; m = number of verticies
+n = number of vertices ; m = number of edges
 
 Number of recursive calls = O(n)
-In each recursive call , number of edge contractions = O(m) & time complexity of cycle detection using DFS = O(m+n) = O(m) ---> since number of edges ranges from [n-1] to nC2.
-Time complexity of each recursive call = O(m) & number of recursive calls = O(n).
+In each recursive call, the number of edge contractions = O(m) & time complexity of cycle detection using DFS = O(m+n) = O(m) ---> since the number of edges ranges from [n-1] to nC2.
+The time complexity of each recursive call = O(m) & the number of recursive calls = O(n).
 Thus the efficiency of this implementation = O(m*n).
 
 
-The code not only works for graphs on which an arboroscence exists, but works on all graphs.
+The code not only works for graphs on which an arborescence exists but works on all graphs.
 For any instance where a particular vertex in the graph is not reachable from the source vertex, '-1' gets printed.
 
 
 Convention :
 
-As in some graphs, multiple minimum cost arboroscenes may exist, when there is a scenario of (we choose edges in the following priority in order)
+As in some graphs, multiple minimum cost arborescences may exist, when there is a scenario of (we choose edges in the following priority in order)
 1. If there are two outgoing edges of the same weight from a vertex, we choose the one with a lower destination vertex.
 2. In case the destination vertex is the same for two edges with the same weight, we choose the one with a lower source vertex.
 
@@ -59,17 +59,17 @@ As in some graphs, multiple minimum cost arboroscenes may exist, when there is a
 The input for the program follows the following format :
 
 1. The first line contains the number of test cases ('T'). For each test case, the following input is provided.
-2. The first line contains integers 'N M s' which indicate total number of verticies, edges, and the source vertex number in the graph respectively.
+2. The first line contains integers 'N M s' which indicate the total number of vertices, edges, and the source vertex number in the graph respectively.
 3. 'M' lines of the format 'u v w' follow indicating an edge from vertex 'u' --> 'v' with weight 'w'. 
 
 
 The output format for this program follows :
 
-1. For each test case, there are 2*'N' + 2 space separated entries.
-2. The first number indicates the minimum cost arboroscence value.
-3. The next 'N' values indicate the distance of vertex 'i' from the source in the minimum cost arboroscence for 1 <= 'i' <= 'N'.
+1. For each test case, there are 2*'N' + 2 space-separated entries.
+2. The first number indicates the minimum cost arborescence value.
+3. The next 'N' values indicate the distance of vertex 'i' from the source in the minimum cost arborescence for 1 <= 'i' <= 'N'.
 4. Then there is the '#' symbol.
-5. Then there are 'N' values showing the parent node of the specific vertex in the arboroscene path. (This value is 0 for the source vertex).
+5. Then there are 'N' values showing the parent node of the specific vertex in the arborescence path. (This value is 0 for the source vertex).
 
 
 Sample Test Cases :
